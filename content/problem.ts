@@ -4,20 +4,20 @@ export interface StatCard {
 }
 
 export const problemContent = {
-  title: "The access gap is structural, not temporary.",
+  title: "The gap is structural. The channel is hiding in plain sight.",
+  body: "70%+ of doctors sit in cities; 72% of patients don't. The one place rural patients already trust is the local pharmacy — so that's where we put the doctor.",
   stats: [
     {
       number: "70%+",
-      description: "of India's doctors are concentrated in urban areas.",
+      description: "doctors in urban areas",
     },
     {
       number: "<33%",
-      description: "of the population those urban doctors serve.",
+      description: "of the population they serve",
     },
     {
       number: "72%",
-      description: "of citizens live in rural and peri-urban regions.",
+      description: "of citizens live rurally",
     },
   ] as StatCard[],
-  body: 'Primary care in these regions is fragmented. The trusted point of contact isn\'t a hospital — it\'s the **local pharmacy or diagnostic centre**. That existing trust is the channel everyone else ignores. We build on it instead of around it.',
 } as const;

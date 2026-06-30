@@ -36,14 +36,14 @@ export default function TractionSection() {
                         cx="10"
                         cy="10"
                         r="9"
-                        stroke="var(--primary)"
+                        stroke="var(--ok)"
                         strokeWidth="1.5"
-                        fill="var(--primary)"
+                        fill="var(--ok)"
                         fillOpacity="0.1"
                       />
                       <path
                         d="M6 10l3 3 5-5"
-                        stroke="var(--primary)"
+                        stroke="var(--ok)"
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"

@@ -2,10 +2,11 @@
 
 import { solutionContent } from "@/content/solution";
 import ScrollReveal from "@/components/ScrollReveal";
+import SystemOverviewDiagram from "@/components/diagrams/SystemOverviewDiagram";
 
-export default function SolutionSection() {
+export default function SystemOverviewSection() {
   return (
-    <section id="solution" className="py-20 md:py-28">
+    <section id="system" className="py-20 md:py-28">
       <div className="section-container">
         <ScrollReveal>
           <h2
@@ -26,16 +27,21 @@ export default function SolutionSection() {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+        <ScrollReveal delay={0.12}>
+          <div className="mb-12 py-8 border-y border-line/50">
+            <SystemOverviewDiagram />
+          </div>
+        </ScrollReveal>
+
+        <div className="flex flex-wrap gap-3">
           {solutionContent.pillars.map((pillar, i) => (
-            <ScrollReveal key={pillar.title} delay={i * 0.06}>
-              <div className="card h-full">
-                <h3 className="font-sans font-semibold text-ink text-base mb-2">
+            <ScrollReveal key={pillar.title} delay={i * 0.05}>
+              <div className="border border-line rounded-lg px-4 py-2.5 bg-surface/60">
+                <span className="font-sans font-semibold text-ink text-sm">
                   {pillar.title}
-                </h3>
-                <p className="text-muted text-sm leading-relaxed">
-                  {pillar.description}
-                </p>
+                </span>
+                <span className="mx-2 text-line">·</span>
+                <span className="text-muted text-sm">{pillar.description}</span>
               </div>
             </ScrollReveal>
           ))}

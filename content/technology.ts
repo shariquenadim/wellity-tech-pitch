@@ -5,32 +5,32 @@ export interface TechPillar {
 }
 
 export const technologyContent = {
-  title: "Built lean, built correct.",
-  body: "Healthcare software fails in two ways — it breaks under bad networks, or it breaks the rules. We engineered against both from day one.",
+  title: "The stack, deliberately lean.",
+  body: "One well-chosen VPS, Postgres, object storage for documents, a local AI workstation for in-house model work, and India-based hosting for data residency — instead of paying for managed everything.",
   pillars: [
     {
-      label: "REAL-TIME",
-      title: "Real-time, resilient",
+      label: "CLIENTS",
+      title: "Pharmacy + Doctor",
       description:
-        "Server-sent events with polling fallback, not fragile sockets. Doctor selection survives flaky rural connections. Atomic accept prevents double-booking.",
+        "Browser-based dashboards — no native app to maintain. Works on low-end devices over 2G/3G.",
     },
     {
-      label: "HEALTH-ID",
-      title: "Health-ID native",
+      label: "APP LAYER",
+      title: "Next.js / FastAPI",
       description:
-        "ABHA / ABDM integration with graceful degradation when a health ID can't be created on the spot.",
+        "Next.js for the pharmacy and doctor dashboards; FastAPI for the real-time selection and clinical record APIs.",
     },
     {
-      label: "SECURITY",
-      title: "Secure by structure",
+      label: "DATA",
+      title: "PostgreSQL + R2",
       description:
-        "Records shared as authenticated links, never raw data over chat. Tamper-evident prescriptions with full audit logs.",
+        "Postgres for all structured data with row-level locks for atomic operations. Cloudflare R2 for prescriptions, reports, and documents.",
     },
     {
-      label: "INFRA",
-      title: "Cost-disciplined infra",
+      label: "EXTERNAL",
+      title: "ABDM · eSign · WhatsApp",
       description:
-        "A single well-chosen VPS, object storage for documents, and a local AI workstation for in-house model work — instead of burning cash on managed everything.",
+        "ABHA/ABDM for health identity, verification APIs for KYC, WhatsApp Business for authenticated record delivery.",
     },
   ] as TechPillar[],
 } as const;

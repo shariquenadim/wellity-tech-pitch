@@ -13,7 +13,7 @@ export interface StakeholderFlow {
   footnote?: string;
 }
 
-export const flowsIntro = "Three roles. One clean loop.";
+export const flowsIntro = "Three roles, one clean loop.";
 
 export const stakeholderFlows: StakeholderFlow[] = [
   {
@@ -23,53 +23,53 @@ export const stakeholderFlows: StakeholderFlow[] = [
     steps: [
       {
         number: 1,
-        title: "Onboard",
+        title: "Onboard & verify",
         description:
           "Owner details, certificate, Aadhaar/PAN. Identity auto-verified; field team helps set up in person.",
       },
       {
         number: 2,
-        title: "Verify",
+        title: "Register patient",
         description:
-          "Admin approval under 24 hrs, then dashboard access.",
+          "Mobile number → ABHA fetched or created → form pre-filled. Consent captured via patient OTP.",
       },
       {
         number: 3,
-        title: "Register patient",
+        title: "Capture complaint + vitals",
         description:
-          "Mobile number → ABHA fetched or created → form pre-filled. (consent captured via patient OTP)",
+          "Pharmacist records complaint and vitals. Nothing clinical — that's the doctor's job.",
       },
       {
         number: 4,
-        title: "Capture intake",
-        description:
-          "Pharmacist records complaint + vitals. Nothing clinical — that's the doctor's job.",
-      },
-      {
-        number: 5,
         title: "Select doctor",
         description:
           "Available doctors bid in real time; pharmacist picks by qualification and fee.",
         isLive: true,
       },
       {
-        number: 6,
+        number: 5,
         title: "Consult",
         description:
-          "Video call connects patient and doctor.",
+          "Verified specialist joins live with intake pre-loaded on screen.",
         isLive: true,
       },
       {
-        number: 7,
-        title: "Dispense & send",
+        number: 6,
+        title: "Print Rx + dispense",
         description:
-          "Print the signed prescription, hand over medicine, and send a secure record link by WhatsApp / SMS / email.",
+          "Signed prescription prints; pharmacist dispenses medicine on the spot.",
+      },
+      {
+        number: 7,
+        title: "Send secure record link",
+        description:
+          "Record link delivered via WhatsApp / SMS / email. PHI never in the message body.",
       },
       {
         number: 8,
-        title: "Upload results",
+        title: "Upload diagnostic reports",
         description:
-          "Diagnostic reports attached to the patient's record.",
+          "Diagnostic reports attached to the patient's ABHA-linked record.",
       },
     ],
   },
@@ -86,38 +86,38 @@ export const stakeholderFlows: StakeholderFlow[] = [
       },
       {
         number: 2,
-        title: "Consent",
+        title: "Consent OTP",
         description:
-          "A one-time OTP to the patient's phone confirms identity and permission.",
+          "A one-time OTP to the patient's phone = identity + consent + timestamp in one step.",
       },
       {
         number: 3,
-        title: "Health ID",
+        title: "ABHA fetch/create",
         description:
-          "ABHA fetched, or created with assistance if they don't have one.",
+          "Health ID fetched, or created with assistance. Graceful degradation if not available immediately.",
       },
       {
         number: 4,
-        title: "Consultation",
+        title: "Consult via pharmacy",
         description:
-          "Connected to a verified doctor through the pharmacy.",
+          "Connected to a verified specialist through the pharmacy screen.",
         isLive: true,
       },
       {
         number: 5,
-        title: "Receive care",
+        title: "Receive medicine + Rx",
         description:
-          "Medicine handed over locally; prescription printed.",
+          "Medicine handed over locally; signed prescription printed.",
       },
       {
         number: 6,
-        title: "Stay in the loop",
+        title: "Follow-up via secure link",
         description:
-          "Reports and follow-up reminders via a secure link (WhatsApp → SMS → email). No smartphone? The pharmacy handles everything in person.",
+          "Reports and follow-up reminders via authenticated link. No smartphone? The pharmacy handles everything in person.",
       },
     ],
     footnote:
-      "Two patient-initiated flows — nearest-facility home visits and direct emergency consults — are planned for later phases, with the clinical and legal safeguards they require.",
+      "Home-visit and emergency direct-call flows are later phases, with the clinical and legal safeguards they require.",
   },
   {
     id: "doctor",
@@ -128,32 +128,32 @@ export const stakeholderFlows: StakeholderFlow[] = [
         number: 1,
         title: "Onboard",
         description:
-          "Personal + contact details, medical certificate, Aadhaar, photo, and medical-council registration number.",
+          "Personal details, medical certificate, Aadhaar, photo, and medical-council registration number.",
       },
       {
         number: 2,
         title: "Verify",
         description:
-          "Identity and licence auto-checked; a live selfie is matched to the ID.",
+          "Licence auto-checked; liveness face-match confirms identity. Fully verified before going live.",
       },
       {
         number: 3,
         title: "Set profile",
         description:
-          "Specialty, qualification, languages, default consultation fee.",
+          "Specialty, qualification, languages spoken, default consultation fee.",
       },
       {
         number: 4,
         title: "Go live",
         description:
-          "A simple availability toggle. Live patient requests appear in the dashboard.",
+          "A simple availability toggle. Live patient requests appear in the dashboard immediately.",
         isLive: true,
       },
       {
         number: 5,
         title: "Bid",
         description:
-          "Respond to a request with a fee (adjustable to the case). Accepting is atomic — no double-booking.",
+          "Respond to a request with a fee. Accepting is atomic — row-level lock prevents double-booking.",
         isLive: true,
       },
       {
@@ -165,18 +165,18 @@ export const stakeholderFlows: StakeholderFlow[] = [
       },
       {
         number: 7,
-        title: "Record & prescribe",
+        title: "Write note + signed Rx",
         description:
-          "Write the clinical note; generate a prescription stamped with the doctor's signature, registration number and an immutable audit trail.",
+          "Clinical note written; prescription stamped with registration number and immutable audit log.",
       },
       {
         number: 8,
-        title: "Follow up",
+        title: "Follow-up",
         description:
           "Returning patients route back to the same doctor.",
       },
     ],
     footnote:
-      "A house-doctor team acts as guaranteed fallback — if no specialist accepts within the window, a Wellity doctor is auto-assigned, so the patient is never left waiting.",
+      "A salaried house-doctor team acts as guaranteed fallback — if no specialist accepts within the window, a Wellity doctor is auto-assigned. The marketplace is never empty.",
   },
 ];

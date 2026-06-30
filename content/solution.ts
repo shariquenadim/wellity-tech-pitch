@@ -4,8 +4,8 @@ export interface Pillar {
 }
 
 export const solutionContent = {
-  title: "The pharmacy becomes the hub.",
-  body: "Patients already walk into their local pharmacy for care. Wellity equips that pharmacy with a simple dashboard, a guided patient intake, and a live connection to verified specialists. The pharmacy stays the trusted face; the specialist joins remotely. Video, voice or chat — whichever the network allows.",
+  title: "The pharmacy is the hub. Everything else is infrastructure.",
+  body: "The pharmacist runs a guided intake; a verified specialist joins live; a signed prescription and the patient's record flow back out — over networks that drop, under rules that don't bend. The hard parts are real-time selection on weak networks, identity and licence verification, health-ID integration, and an audit trail that holds up. That's the product.",
   pillars: [
     {
       title: "Last-mile trust",

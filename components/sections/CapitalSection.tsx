@@ -62,7 +62,7 @@ export default function CapitalSection() {
                       {row.purpose}
                     </td>
                     <td className="py-3 pr-4">
-                      <span className="inline-block font-mono text-[10px] tracking-wide text-primary/80 bg-primary/8 px-2 py-0.5 rounded whitespace-nowrap">
+                      <span className="inline-block font-mono text-[10px] tracking-wide text-brand/80 bg-brand/8 px-2 py-0.5 rounded whitespace-nowrap">
                         {row.type}
                       </span>
                     </td>
@@ -78,14 +78,14 @@ export default function CapitalSection() {
 
         {/* Workstation Justification */}
         <ScrollReveal delay={0.18}>
-          <div className="border border-primary/20 rounded-2xl p-6 md:p-8 bg-primary/[0.02]">
+          <div className="border border-brand/20 rounded-2xl p-6 md:p-8 bg-brand/[0.02]">
             <h3 className="font-sans font-semibold text-ink text-lg mb-4 flex items-start gap-3">
               <svg
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="var(--primary)"
+                stroke="var(--brand)"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -105,7 +105,7 @@ export default function CapitalSection() {
                   key={i}
                   className="flex items-start gap-3 text-ink/80 text-sm leading-relaxed"
                 >
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand flex-shrink-0" />
                   {point}
                 </li>
               ))}

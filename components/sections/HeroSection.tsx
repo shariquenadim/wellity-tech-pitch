@@ -27,7 +27,7 @@ export default function HeroSection({ onPresentationMode }: HeroSectionProps) {
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
+          transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
         },
       };
 
@@ -78,8 +78,8 @@ export default function HeroSection({ onPresentationMode }: HeroSectionProps) {
             className="flex flex-wrap gap-4 items-center"
           >
             <a
-              href="#flows"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-primary-ink transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              href="#system"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-brand text-white rounded-lg font-sans text-sm font-medium hover:bg-brand-deep transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             >
               {heroContent.ctaPrimary}
               <svg
@@ -100,7 +100,7 @@ export default function HeroSection({ onPresentationMode }: HeroSectionProps) {
             </a>
             <button
               onClick={onPresentationMode}
-              className="inline-flex items-center gap-2 px-6 py-3 border border-line text-ink rounded-lg font-sans text-sm font-medium hover:border-primary hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-line text-ink rounded-lg font-sans text-sm font-medium hover:border-brand hover:text-brand transition-colors focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             >
               <svg
                 width="16"

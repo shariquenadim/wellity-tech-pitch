@@ -1,36 +1,42 @@
 export interface TractionItem {
   title: string;
   description: string;
+  done: boolean;
 }
 
 export const tractionContent = {
-  title: "Already in motion.",
+  title: "What's built.",
   items: [
     {
-      title: "Three stakeholder flows designed",
+      title: "Three stakeholder flows finalized",
       description:
-        "Pharmacy, patient and doctor journeys finalized, balancing convenience with compliance and audit.",
+        "Pharmacy, patient and doctor journeys designed, balancing convenience with compliance and audit.",
+      done: true,
     },
     {
       title: "Marketing site live",
       description: "wellitycare.com is up.",
+      done: true,
     },
     {
-      title: "Onboarding backend started",
+      title: "Onboarding backend in development",
       description:
-        "Initial onboarding-form backend in development (on GitHub).",
+        "Initial onboarding-form backend in development on GitHub.",
+      done: true,
     },
     {
-      title: "Architecture & research done",
+      title: "Architecture & compliance approach scoped",
       description:
-        "System design, real-time model, and compliance approach scoped.",
+        "System design, real-time model, and compliance approach finalized. Verification APIs (Aadhaar/PAN/licence) evaluated for cost and integration.",
+      done: true,
     },
     {
-      title: "Vendor groundwork",
+      title: "Vendor groundwork done",
       description:
-        "Aadhaar/PAN verification APIs evaluated (cost + integration), Zoho business email onboarded.",
+        "Zoho business email onboarded. Verification APIs selected. WhatsApp Business API evaluated.",
+      done: true,
     },
   ] as TractionItem[],
   footnote:
-    "This is the foundation. The next phase is execution — and the focused tooling to do it well.",
+    "Foundation done. Next phase is execution — and the focused tooling to do it well.",
 } as const;

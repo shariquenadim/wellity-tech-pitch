@@ -35,7 +35,7 @@ export default function CloseSection() {
 
         <ScrollReveal delay={0.18}>
           <div className="inline-block border border-line rounded-xl p-6 bg-surface/50">
-            <p className="font-mono text-sm text-primary font-medium mb-1">
+            <p className="font-mono text-sm text-brand font-medium mb-1">
               {closeContent.founderName}
             </p>
             <p className="font-mono text-xs text-muted">

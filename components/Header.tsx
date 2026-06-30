@@ -8,9 +8,9 @@ interface HeaderProps {
 
 const navLinks = [
   { label: "Problem", href: "#problem" },
-  { label: "Solution", href: "#solution" },
+  { label: "System", href: "#system" },
+  { label: "Decisions", href: "#decisions" },
   { label: "Flows", href: "#flows" },
-  { label: "Technology", href: "#technology" },
   { label: "Budget", href: "#capital" },
 ];
 
@@ -36,7 +36,7 @@ export default function Header({ onPresentationMode }: HeaderProps) {
         {/* Logo */}
         <a
           href="#hero"
-          className="font-mono text-xs tracking-[0.12em] text-primary font-medium uppercase"
+          className="font-mono text-xs tracking-[0.12em] text-brand font-medium uppercase"
         >
           Wellity
         </a>
@@ -54,7 +54,7 @@ export default function Header({ onPresentationMode }: HeaderProps) {
           ))}
           <button
             onClick={onPresentationMode}
-            className="ml-2 px-3.5 py-1.5 text-xs font-mono tracking-wide border border-line rounded-lg text-muted hover:text-primary hover:border-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary"
+            className="ml-2 px-3.5 py-1.5 text-xs font-mono tracking-wide border border-line rounded-lg text-muted hover:text-brand hover:border-brand transition-colors focus-visible:ring-2 focus-visible:ring-brand"
           >
             Present
           </button>
@@ -103,7 +103,7 @@ export default function Header({ onPresentationMode }: HeaderProps) {
                 setMobileOpen(false);
                 onPresentationMode();
               }}
-              className="mt-2 px-3.5 py-2 text-xs font-mono tracking-wide border border-line rounded-lg text-muted hover:text-primary hover:border-primary transition-colors w-fit"
+              className="mt-2 px-3.5 py-2 text-xs font-mono tracking-wide border border-line rounded-lg text-muted hover:text-brand hover:border-brand transition-colors w-fit focus-visible:ring-2 focus-visible:ring-brand"
             >
               Presentation Mode
             </button>

@@ -5,53 +5,31 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 export default function ProblemSection() {
   return (
-    <section id="problem" className="py-20 md:py-28">
+    <section id="problem" className="py-12 md:py-16">
       <div className="section-container">
         <ScrollReveal>
-          <h2
-            className="font-display text-ink mb-12 max-w-2xl"
-            style={{
-              fontSize: "clamp(1.75rem, 4vw, 2.75rem)",
-              fontWeight: 420,
-              lineHeight: 1.15,
-            }}
-          >
-            {problemContent.title}
-          </h2>
+          <p className="text-ink/90 text-base md:text-lg leading-relaxed max-w-2xl mb-8">
+            {problemContent.body}
+          </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-12">
-          {problemContent.stats.map((stat, i) => (
-            <ScrollReveal key={stat.number} delay={i * 0.06}>
-              <div className="card text-center py-8 md:py-10">
+        <ScrollReveal delay={0.06}>
+          <div className="flex flex-col sm:flex-row gap-0 divide-y sm:divide-y-0 sm:divide-x divide-line/50 border border-line/50 rounded-xl overflow-hidden bg-surface/40">
+            {problemContent.stats.map((stat) => (
+              <div
+                key={stat.number}
+                className="flex-1 flex flex-col items-center text-center py-6 px-4"
+              >
                 <p
-                  className="font-mono text-primary mb-3"
-                  style={{
-                    fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
-                    fontWeight: 600,
-                    lineHeight: 1,
-                  }}
+                  className="font-mono text-brand mb-1.5"
+                  style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 600, lineHeight: 1 }}
                 >
                   {stat.number}
                 </p>
-                <p className="text-muted text-sm md:text-base leading-relaxed">
-                  {stat.description}
-                </p>
+                <p className="text-muted text-xs leading-relaxed">{stat.description}</p>
               </div>
-            </ScrollReveal>
-          ))}
-        </div>
-
-        <ScrollReveal>
-          <p className="text-ink/90 text-base md:text-lg leading-relaxed max-w-2xl">
-            Primary care in these regions is fragmented. The trusted point of
-            contact isn&apos;t a hospital — it&apos;s the{" "}
-            <strong className="font-semibold text-ink">
-              local pharmacy or diagnostic centre
-            </strong>
-            . That existing trust is the channel everyone else ignores. We build
-            on it instead of around it.
-          </p>
+            ))}
+          </div>
         </ScrollReveal>
       </div>
     </section>

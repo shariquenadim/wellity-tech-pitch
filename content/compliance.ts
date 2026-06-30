@@ -4,12 +4,12 @@ export interface ComplianceCard {
 }
 
 export const complianceContent = {
-  title: "Compliance isn't a feature. It's the foundation.",
+  title: "Compliance is the foundation, not a feature.",
   cards: [
     {
       title: "ABDM / FHIR",
       description:
-        "Aligned with India's national digital health stack; records map to FHIR standards, keeping us tender- and partner-eligible.",
+        "Aligned with India's national digital health stack. Records map to FHIR standards, keeping us tender- and partner-eligible.",
     },
     {
       title: "DPDP Act",
@@ -19,12 +19,12 @@ export const complianceContent = {
     {
       title: "Audit everywhere",
       description:
-        "Every action — who, what, when — is logged immutably. Backups and logs are first-class, not afterthoughts.",
+        "Immutable who/what/when logs for every action. Backups and logs are first-class, not afterthoughts.",
     },
     {
       title: "Verified identities",
       description:
-        "Doctors and facilities are checked at onboarding; patients consent before any data moves.",
+        "Doctors and facilities checked at onboarding; patients consent before any data moves.",
     },
   ] as ComplianceCard[],
   footnote:

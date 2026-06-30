@@ -4,78 +4,107 @@ export interface Slide {
   headline: string;
   points: string[];
   footnote?: string;
+  diagram?: "systemOverview" | "stakeholderFlow" | "architecture";
+  tags?: string[];
 }
 
 export const presentationSlides: Slide[] = [
   {
-    id: "slide-hero",
+    id: "slide-title",
     sectionId: "hero",
     headline: "Specialist care, delivered through the pharmacy next door.",
     points: [
-      "B2B telemedicine platform for rural and Tier 2/3 India",
-      "Pharmacies become telemedicine hubs — no app for patients to learn",
-      "Low-bandwidth, fully compliant, verified doctors",
+      "B2B telemedicine infrastructure for rural and Tier 2/3 India",
+      "Pharmacies become compliant care hubs — no app for patients to learn",
+      "Engineered for low-bandwidth India, built on ABDM, audited end to end",
     ],
   },
   {
-    id: "slide-problem",
+    id: "slide-founder",
+    sectionId: "hero",
+    headline: "[FOUNDER NAME] — Technical co-founder, platform & architecture.",
+    points: [
+      "Software engineer with banking-grade systems experience — payments, bulk data, compliance-heavy workflows.",
+      "Building Wellity's technical foundation: real-time infrastructure, health-identity integration, audit-first design.",
+    ],
+    tags: ["BANKING-GRADE SYSTEMS", "B.TECH, NIT", "IEEE-PUBLISHED"],
+  },
+  {
+    id: "slide-gap",
     sectionId: "problem",
-    headline: "The access gap is structural, not temporary.",
+    headline: "The gap is structural. The channel is hiding in plain sight.",
     points: [
-      "70%+ of doctors concentrated in urban areas",
-      "72% of citizens in rural and peri-urban regions",
-      "The trusted point of contact is the local pharmacy — we build on it",
+      "70%+ of doctors are in cities. 72% of patients aren't.",
+      "The trusted point of contact in rural India is the local pharmacy.",
+      "That's where we put the doctor.",
     ],
   },
   {
-    id: "slide-solution",
-    sectionId: "solution",
-    headline: "The pharmacy becomes the hub.",
+    id: "slide-system",
+    sectionId: "system",
+    headline: "The pharmacy is the hub. Everything else is infrastructure.",
     points: [
-      "Simple dashboard + guided intake + live specialist connection",
-      "Low-bandwidth first — works on 2G/3G",
-      "Every doctor verified, every record compliant",
+      "Pharmacist runs guided intake → specialist joins live → signed Rx flows back out",
+      "Real-time selection, health-ID integration, and audit trail — on networks that drop",
     ],
+    diagram: "systemOverview",
   },
   {
     id: "slide-flows",
     sectionId: "flows",
-    headline: "Three roles. One clean loop.",
+    headline: "Three roles, one clean loop.",
     points: [
-      "Pharmacy: onboard → register patient → select doctor (live) → dispense",
-      "Patient: walk in → consent → consult → receive care (no app needed)",
-      "Doctor: verify → go live → bid → consult → prescribe with audit trail",
+      "Pharmacy: onboard → register patient → select doctor (live) → print Rx + dispense",
+      "Patient: walk in → consent OTP → consult → receive medicine (no app needed)",
+      "Doctor: verify → go live → bid (atomic) → consult → write note + signed Rx",
     ],
+    diagram: "stakeholderFlow",
   },
   {
-    id: "slide-technology",
-    sectionId: "technology",
-    headline: "Built lean, built correct.",
+    id: "slide-decisions",
+    sectionId: "decisions",
+    headline: "Decisions we already made.",
     points: [
-      "SSE with polling fallback — survives rural connections",
-      "ABHA / ABDM native with graceful degradation",
-      "Tamper-evident prescriptions, full audit logs",
-      "Cost-disciplined infra — VPS + object storage + local AI workstation",
+      "SSE + polling fallback — not WebSockets. Survives 2G/3G drop-offs.",
+      "Atomic accept with row-level lock — no double-booking, ever.",
+      "House-doctor fallback — the marketplace is never empty.",
+      "ABHA graceful degradation — consult proceeds; health ID links later.",
+      "Signed Rx via stored signature + reg. number — legally valid, zero per-Rx cost.",
     ],
+    footnote:
+      "None of these are visible in a demo. All of them are why a real engineering team is needed.",
+  },
+  {
+    id: "slide-architecture",
+    sectionId: "architecture",
+    headline: "The stack, deliberately lean.",
+    points: [
+      "One well-chosen VPS · Postgres · R2 object storage",
+      "India-hosted for data residency · Local AI workstation for Phase 2",
+    ],
+    diagram: "architecture",
   },
   {
     id: "slide-phases",
     sectionId: "phases",
-    headline: "Ship the loop now. Build the moat next.",
+    headline: "Ship the loop now. Build the data moat next.",
     points: [
-      "Phase 1: working, legal, trusted consultation — end to end",
-      "Phase 2: vernacular voice-to-EMR pipeline on structured clinical data",
-      "The moat is the multilingual health data only this channel produces",
+      "Phase 1: pharmacy hub, verified doctors, live selection, compliant prescriptions. No AI in the critical path.",
+      "Phase 2: every consult → structured, consented clinical data → vernacular voice-to-EMR pipeline.",
+      "We run a local AI workstation: in-house models, no per-token cost, health data on-prem.",
     ],
+    footnote:
+      "The moat isn't the video call. It's the structured, multilingual health data only this channel produces.",
   },
   {
     id: "slide-compliance",
     sectionId: "compliance",
-    headline: "Compliance isn't a feature. It's the foundation.",
+    headline: "Compliance is the foundation, not a feature.",
     points: [
-      "ABDM / FHIR aligned — tender- and partner-eligible",
-      "DPDP Act: purpose-specific consent, no data repurposing",
-      "Every action logged immutably — audit-first architecture",
+      "ABDM / FHIR — aligned with India's national health stack, tender-eligible",
+      "DPDP Act — purpose-specific consent; health data never repurposed for marketing",
+      "Audit everywhere — immutable who/what/when logs, backups are first-class",
+      "Verified identities — doctors and facilities checked at onboarding",
     ],
   },
   {
@@ -84,20 +113,9 @@ export const presentationSlides: Slide[] = [
     headline: "Strong architecture, deliberately low cost.",
     points: [
       "₹2.2–2.8L one-time workstation replaces open-ended cloud-GPU bills",
-      "₹5–10k/mo total infra — VPS + storage + backups",
-      "Health data on-premise during R&D — DPDP advantage",
+      "~₹5–10k/mo total infra — VPS + backups + object storage",
+      "Health data on-premise during R&D — a DPDP advantage",
       "The ask is focused tooling, not premature scale",
-    ],
-  },
-  {
-    id: "slide-traction",
-    sectionId: "traction",
-    headline: "Already in motion.",
-    points: [
-      "Three stakeholder flows finalized",
-      "Marketing site live — wellitycare.com",
-      "Onboarding backend started (GitHub)",
-      "Architecture, compliance approach, and vendor groundwork done",
     ],
   },
   {
@@ -105,7 +123,8 @@ export const presentationSlides: Slide[] = [
     sectionId: "close",
     headline: "The trust already exists. We're giving it a specialist.",
     points: [
-      "Last-mile telemedicine, built for the India that needs it most",
+      "Three stakeholder flows finalized · Marketing site live · Architecture scoped · Vendor groundwork done",
+      "Wellity HealthCare — last-mile telemedicine infrastructure for the India that needs it most.",
     ],
   },
 ];

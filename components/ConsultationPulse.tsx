@@ -26,7 +26,7 @@ export default function ConsultationPulse({
   const lineEnd = doctorX - d.dotSize - 4;
 
   return (
-    <div className={`inline-flex items-center ${className}`} aria-label="Consultation pulse animation: pharmacy connects to doctor in real time">
+    <div className={`inline-flex items-center ${className}`} aria-label="Consultation pulse: pharmacy connects live to doctor">
       <svg
         width={d.width}
         height={d.height}
@@ -53,7 +53,7 @@ export default function ConsultationPulse({
             cx={lineStart}
             cy={d.lineY}
             r={d.dotSize * 0.35}
-            fill="var(--accent)"
+            fill="var(--brand-soft)"
             opacity={0}
             animate={{
               cx: [lineStart, lineEnd],
@@ -68,34 +68,34 @@ export default function ConsultationPulse({
           />
         )}
 
-        {/* Pharmacy dot (teal) */}
+        {/* Pharmacy dot (brand blue) */}
         <circle
           cx={pharmacyX}
           cy={d.lineY}
           r={d.dotSize}
-          fill="var(--primary)"
+          fill="var(--brand)"
           opacity={0.15}
         />
         <circle
           cx={pharmacyX}
           cy={d.lineY}
           r={d.dotSize * 0.6}
-          fill="var(--primary)"
+          fill="var(--brand)"
         />
 
-        {/* Doctor dot (clay/signal) with pulse */}
+        {/* Doctor dot (live/amber) with pulse ring */}
         <motion.circle
           cx={doctorX}
           cy={d.lineY}
           r={d.dotSize}
-          fill="var(--signal)"
+          fill="var(--live)"
           opacity={0.2}
           animate={
             shouldReduceMotion
               ? {}
               : {
                   r: [d.dotSize, d.dotSize * 1.4, d.dotSize],
-                  opacity: [0.2, 0.08, 0.2],
+                  opacity: [0.2, 0.06, 0.2],
                 }
           }
           transition={{
@@ -108,7 +108,7 @@ export default function ConsultationPulse({
           cx={doctorX}
           cy={d.lineY}
           r={d.dotSize * 0.6}
-          fill="var(--signal)"
+          fill="var(--live)"
         />
 
         {/* Labels */}
@@ -126,7 +126,7 @@ export default function ConsultationPulse({
           x={d.width / 2}
           y={d.lineY - d.dotSize - 4}
           textAnchor="middle"
-          fill="var(--accent)"
+          fill="var(--live)"
           fontSize={d.fontSize - 1}
           fontFamily="var(--font-ibm-plex-mono), monospace"
           letterSpacing="0.05em"

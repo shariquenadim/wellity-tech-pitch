@@ -5,9 +5,10 @@ import { AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import HeroSection from "@/components/sections/HeroSection";
 import ProblemSection from "@/components/sections/ProblemSection";
-import SolutionSection from "@/components/sections/SolutionSection";
+import SystemOverviewSection from "@/components/sections/SystemOverviewSection";
+import EngineeringDecisionsSection from "@/components/sections/EngineeringDecisionsSection";
 import FlowsSection from "@/components/sections/FlowsSection";
-import TechnologySection from "@/components/sections/TechnologySection";
+import ArchitectureSection from "@/components/sections/ArchitectureSection";
 import PhasesSection from "@/components/sections/PhasesSection";
 import ComplianceSection from "@/components/sections/ComplianceSection";
 import CapitalSection from "@/components/sections/CapitalSection";
@@ -53,19 +54,28 @@ export default function Home() {
         <div className="border-t border-line/40" />
         <ProblemSection />
 
-        <SolutionSection />
+        <div className="border-t border-line/40" />
+        <SystemOverviewSection />
+
+        <div className="border-t border-line/40" />
+        <EngineeringDecisionsSection />
 
         <div className="border-t border-line/40" />
         <FlowsSection />
 
-        <TechnologySection />
+        <div className="border-t border-line/40" />
+        <ArchitectureSection />
 
+        <div className="border-t border-line/40" />
         <PhasesSection />
 
+        <div className="border-t border-line/40" />
         <ComplianceSection />
 
+        <div className="border-t border-line/40" />
         <CapitalSection />
 
+        <div className="border-t border-line/40" />
         <TractionSection />
 
         <div className="border-t border-line/40" />
@@ -79,7 +89,7 @@ export default function Home() {
             Wellity HealthCare © {new Date().getFullYear()}
           </p>
           <p className="font-mono text-[10px] text-muted/60">
-            B2B Telemedicine · India
+            B2B Telemedicine Infrastructure · India
           </p>
         </div>
       </footer>

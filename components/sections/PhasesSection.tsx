@@ -33,7 +33,7 @@ export default function PhasesSection() {
                     key={i}
                     className="flex items-start gap-3 text-muted text-sm leading-relaxed"
                   >
-                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand flex-shrink-0" />
                     {point}
                   </li>
                 ))}
@@ -43,7 +43,7 @@ export default function PhasesSection() {
 
           {/* Phase 2 */}
           <ScrollReveal delay={0.12}>
-            <div className="card h-full border-primary/20 bg-primary/[0.03]">
+            <div className="card h-full border-brand/20 bg-brand/[0.03]">
               <h3 className="font-sans font-semibold text-ink text-lg mb-4">
                 {phasesContent.phase2.title}
               </h3>
@@ -53,7 +53,7 @@ export default function PhasesSection() {
                     key={i}
                     className="flex items-start gap-3 text-muted text-sm leading-relaxed"
                   >
-                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-soft flex-shrink-0" />
                     {point}
                   </li>
                 ))}
