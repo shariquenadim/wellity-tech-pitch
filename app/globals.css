@@ -1,26 +1,196 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #0E1A24;
+  --paper: #FBFCFD;
+  --surface: #F1F5F7;
+  --line: #DCE5EA;
+  --primary: #0F766E;
+  --primary-ink: #0B5D56;
+  --accent: #3B9E94;
+  --signal: #E0683C;
+  --muted: #5C7080;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-accent: var(--accent);
+  --color-signal: var(--signal);
+  --color-muted: var(--muted);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-ibm-plex-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ——— Base ——— */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* ——— Scroll offset for sticky header ——— */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* ——— Focus States ——— */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ——— Reduced Motion ——— */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ——— Section spacing ——— */
+.section-container {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .section-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* ——— Presentation Mode ——— */
+.presentation-mode {
+  background-color: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+}
+
+.presentation-mode .slide {
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 4rem;
+}
+
+/* ——— Card base ——— */
+.card {
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(14, 26, 36, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+}
+
+/* ——— Link underline-grow ——— */
+.link-grow {
+  position: relative;
+  text-decoration: none;
+  color: var(--accent);
+}
+
+.link-grow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 0;
+  height: 1px;
+  background-color: var(--accent);
+  transition: width 0.25s ease;
+}
+
+.link-grow:hover::after {
+  width: 100%;
+}
+
+/* ——— Consultation Pulse ——— */
+@keyframes pulse-signal {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.25); }
+}
+
+@keyframes travel-packet {
+  0% { transform: translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(var(--travel-distance, 120px)); opacity: 0; }
+}
+
+.pulse-dot {
+  animation: pulse-signal 3s ease-in-out infinite;
+}
+
+.travel-dot {
+  animation: travel-packet 3s ease-in-out infinite;
+}
+
+/* ——— Presentation dark mode cards ——— */
+.presentation-mode .card {
+  background-color: rgba(251, 252, 253, 0.06);
+  border-color: rgba(251, 252, 253, 0.12);
+}
+
+.presentation-mode .card:hover {
+  box-shadow: 0 4px 16px rgba(251, 252, 253, 0.06);
+}
+
+/* ——— Scrollbar styling ——— */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
 }
