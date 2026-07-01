@@ -212,7 +212,7 @@ export default function ScalingBudgetVisual({
       </div>
 
       <DiagramImageFallback
-        src="/diagrams/scaling.png"
+        src="/diagrams/scalling.png"
         fallbackSrc="/diagrams/scalling.png"
         alt="Three-year consult volume and infrastructure scaling visual"
         dark={dark}

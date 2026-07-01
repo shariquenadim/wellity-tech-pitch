@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 import {
   motion,
   AnimatePresence,
@@ -18,7 +18,7 @@ interface Props {
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-function IconPath({ name }: { name: FlowIcon }) {
+export function IconPath({ name }: { name: FlowIcon }) {
   const paths: Record<FlowIcon, ReactNode> = {
     "id-card": (
       <>
@@ -110,7 +110,7 @@ function IconPath({ name }: { name: FlowIcon }) {
   return paths[name];
 }
 
-function StepIcon({
+export function StepIcon({
   icon,
   live,
   dark,
@@ -280,11 +280,36 @@ export default function StakeholderFlowDiagram({
   dark = false,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const stepsRef = useRef<HTMLDivElement>(null);
+  const firstDotRef = useRef<HTMLDivElement>(null);
+  const lastDotRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { once: true, amount: 0.18 });
   const shouldReduceMotion = useReducedMotion();
   const isActive = trigger !== undefined ? trigger : inView;
   const displayActive = shouldReduceMotion ? true : isActive;
-  const lineHeight = Math.max(0, (flow.steps.length - 1) * 136 + 56);
+  const [lineHeight, setLineHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const first = firstDotRef.current;
+      const last = lastDotRef.current;
+      if (!first || !last) return;
+      const firstRect = first.getBoundingClientRect();
+      const lastRect = last.getBoundingClientRect();
+      const distance =
+        lastRect.top + lastRect.height / 2 - (firstRect.top + firstRect.height / 2);
+      setLineHeight(Math.max(0, distance));
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    if (stepsRef.current) observer.observe(stepsRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [flow.id, flow.steps.length]);
 
   return (
     <AnimatePresence mode="wait">
@@ -319,7 +344,7 @@ export default function StakeholderFlowDiagram({
             />
           </div>
 
-          <div className="space-y-6">
+          <div ref={stepsRef} className="space-y-6">
             {flow.steps.map((step, index) => (
               <div
                 key={`${flow.id}-${step.number}`}
@@ -328,6 +353,7 @@ export default function StakeholderFlowDiagram({
                 <div className="hidden sm:block" aria-hidden="true" />
 
                 <motion.div
+                  ref={index === 0 ? firstDotRef : index === flow.steps.length - 1 ? lastDotRef : undefined}
                   initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.75 }}
                   animate={
                     displayActive

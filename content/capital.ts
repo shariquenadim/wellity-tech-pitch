@@ -5,6 +5,12 @@ export interface CostRow {
   estimate: string;
 }
 
+export interface WorkstationSpecRow {
+  component: string;
+  spec: string;
+  why: string;
+}
+
 export const capitalContent = {
   title: "Strong architecture, deliberately low cost.",
   body: "We chose every piece of infrastructure to do more with less. The ask isn't for scale we don't need yet — it's for the focused tooling that lets a small team ship a compliant platform and build the AI advantage in-house.",
@@ -14,7 +20,7 @@ export const capitalContent = {
       purpose:
         "Local model R&D (voice-to-EMR), AI-assisted development, data kept on-prem",
       type: "One-time",
-      estimate: "₹2.2L – 2.8L",
+      estimate: "₹3.5L",
     },
     {
       item: "Application VPS",
@@ -63,4 +69,28 @@ export const capitalContent = {
   ],
   workstationFootnote:
     "Cloud GPU at comparable usage crosses the workstation's one-time cost within months — and keeps charging after.",
+  workstationSpecs: [
+    {
+      component: "GPU",
+      spec: "RTX 5070 Ti",
+      why: "Local inference/fine-tuning for the voice-to-EMR pipeline — zero per-token cost during R&D",
+    },
+    {
+      component: "CPU",
+      spec: "Ryzen 7 9700X",
+      why: "Parallel builds, containerized dev environment, concurrent model + app workloads",
+    },
+    {
+      component: "RAM",
+      spec: "64GB DDR5",
+      why: "Loads full medical ASR datasets + LLM context in-memory, no swap bottleneck",
+    },
+    {
+      component: "Storage",
+      spec: "NVMe SSD (3TB)",
+      why: "Fast dataset I/O for ASR/EMR training iterations",
+    },
+  ] as WorkstationSpecRow[],
+  workstationFramingLine:
+    "This is R&D infrastructure, not a workstation — it's what lets us build the Phase 2 AI moat in-house instead of renting GPU-hours indefinitely. Also powers in-house analytics.",
 } as const;

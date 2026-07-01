@@ -4,10 +4,14 @@ import { useEffect, useCallback, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { presentationSlides } from "@/content/slides";
 import { stakeholderFlows } from "@/content/flows";
+import { capitalContent } from "@/content/capital";
 import SystemOverviewDiagram from "@/components/diagrams/SystemOverviewDiagram";
-import StakeholderFlowDiagram from "@/components/diagrams/StakeholderFlowDiagram";
+import FlowOverviewGrid from "@/components/diagrams/FlowOverviewGrid";
+import FlowDetailGrid from "@/components/diagrams/FlowDetailGrid";
 import ArchitectureDiagram from "@/components/diagrams/ArchitectureDiagram";
 import ScalingBudgetVisual from "@/components/diagrams/ScalingBudgetVisual";
+import WorkstationSpecTable from "@/components/WorkstationSpecTable";
+import PresentationBackground from "@/components/PresentationBackground";
 
 interface PresentationModeProps {
   isActive: boolean;
@@ -156,6 +160,17 @@ function WorkstationSlide({
           </p>
         </motion.div>
       )}
+      <motion.div
+        initial={reduceMotion ? {} : { opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.42, ease: EASE, delay: 0.55 }}
+        className="mt-6"
+      >
+        <WorkstationSpecTable rows={capitalContent.workstationSpecs} dark />
+        <p className="mt-4 font-mono text-xs leading-relaxed text-brand-soft">
+          {capitalContent.workstationFramingLine}
+        </p>
+      </motion.div>
     </>
   );
 }
@@ -166,6 +181,7 @@ export default function PresentationMode({
   onClose,
   onNext,
   onPrev,
+  onGoTo,
 }: PresentationModeProps) {
   const shouldReduceMotion = useReducedMotion();
   const totalSlides = presentationSlides.length;
@@ -214,6 +230,15 @@ export default function PresentationMode({
     }
   }, [isActive, handleKeyDown]);
 
+  useEffect(() => {
+    if (!isActive) return;
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) onClose();
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, [isActive, onClose]);
+
   if (!isActive) return null;
 
   const slideVariants = shouldReduceMotion
@@ -222,19 +247,25 @@ export default function PresentationMode({
         enter: (direction: number) => ({
           x: direction > 0 ? "60%" : "-60%",
           opacity: 0,
+          scale: 0.97,
         }),
         center: {
           x: 0,
           opacity: 1,
+          scale: 1,
         },
         exit: (direction: number) => ({
           x: direction > 0 ? "-60%" : "60%",
           opacity: 0,
+          scale: 0.97,
         }),
       };
 
   const pharmacyFlow = stakeholderFlows[0];
-  const isWideSlide = slide.variant === "infraScaling";
+  const isWideSlide =
+    slide.variant === "infraScaling" ||
+    slide.diagram === "flowOverview" ||
+    slide.diagram === "flowDetail";
 
   return (
     <motion.div
@@ -244,16 +275,20 @@ export default function PresentationMode({
       exit={shouldReduceMotion ? {} : { opacity: 0 }}
       transition={{ duration: 0.3, ease: EASE }}
     >
+      <PresentationBackground />
+
       {/* Close button */}
-      <button
+      <motion.button
         onClick={onClose}
-        className="absolute top-6 right-6 z-50 text-paper/50 hover:text-paper transition-colors p-2 rounded-lg focus-visible:ring-2 focus-visible:ring-brand-soft"
+        whileHover={shouldReduceMotion ? {} : { scale: 1.06 }}
+        whileTap={shouldReduceMotion ? {} : { scale: 0.94 }}
+        className="absolute top-6 right-6 z-50 flex items-center justify-center rounded-full border border-paper/15 bg-paper/[0.06] p-2.5 text-paper/70 transition-colors hover:border-paper/30 hover:bg-paper/[0.14] hover:text-paper focus-visible:ring-2 focus-visible:ring-brand-soft"
         aria-label="Exit presentation mode (Esc)"
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
           <path d="M18 6L6 18M6 6l12 12" />
         </svg>
-      </button>
+      </motion.button>
 
       {/* Slide content */}
       <AnimatePresence mode="wait" custom={direction}>
@@ -265,7 +300,7 @@ export default function PresentationMode({
           animate="center"
           exit="exit"
           transition={{ duration: 0.45, ease: EASE }}
-          className="h-full w-full flex items-center justify-center px-5 md:px-12 lg:px-16 overflow-y-auto"
+          className="relative z-10 h-full w-full flex items-center justify-center px-5 md:px-12 lg:px-16 overflow-y-auto"
         >
           <div className={`${isWideSlide ? "max-w-7xl" : "max-w-4xl"} w-full py-16`}>
             {/* Headline */}
@@ -315,8 +350,11 @@ export default function PresentationMode({
                 {slide.diagram === "systemOverview" && (
                   <SystemOverviewDiagram trigger={true} />
                 )}
-                {slide.diagram === "stakeholderFlow" && (
-                  <StakeholderFlowDiagram flow={pharmacyFlow} trigger={true} dark />
+                {slide.diagram === "flowOverview" && (
+                  <FlowOverviewGrid flows={stakeholderFlows} trigger={true} dark />
+                )}
+                {slide.diagram === "flowDetail" && (
+                  <FlowDetailGrid flow={pharmacyFlow} trigger={true} dark />
                 )}
                 {slide.diagram === "architecture" && (
                   <ArchitectureDiagram dark trigger={true} />
@@ -347,33 +385,59 @@ export default function PresentationMode({
       </AnimatePresence>
 
       {/* Navigation */}
-      <div className="absolute bottom-6 left-0 right-0 flex items-center justify-between px-8">
-        <button
-          onClick={() => { setDirection(-1); onPrev(); }}
-          disabled={currentSlide === 0}
-          className="text-paper/40 hover:text-paper disabled:opacity-20 disabled:cursor-not-allowed transition-colors p-3 rounded-lg focus-visible:ring-2 focus-visible:ring-brand-soft"
-          aria-label="Previous slide"
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
+      <div className="absolute bottom-6 left-0 right-0 z-40 flex flex-col items-center gap-3 px-8">
+        <div className="flex items-center gap-1.5">
+          {presentationSlides.map((s, index) => {
+            const isNewSection =
+              index > 0 && presentationSlides[index - 1].sectionId !== s.sectionId;
+            return (
+              <button
+                key={s.id}
+                onClick={() => { setDirection(index > currentSlide ? 1 : -1); onGoTo(index); }}
+                aria-label={`Go to slide ${index + 1}: ${s.headline}`}
+                title={s.headline}
+                className={`${isNewSection ? "ml-2" : ""} h-1.5 rounded-full transition-all focus-visible:ring-2 focus-visible:ring-brand-soft ${
+                  index === currentSlide
+                    ? "w-6 bg-brand-soft"
+                    : "w-1.5 bg-paper/25 hover:bg-paper/45"
+                }`}
+              />
+            );
+          })}
+        </div>
 
-        {/* Mono progress counter */}
-        <span className="font-mono text-xs text-paper/40 tracking-[0.12em]">
-          {String(currentSlide + 1).padStart(2, "0")} / {String(totalSlides).padStart(2, "0")}
-        </span>
+        <div className="flex w-full items-center justify-between">
+          <motion.button
+            onClick={() => { setDirection(-1); onPrev(); }}
+            disabled={currentSlide === 0}
+            whileHover={shouldReduceMotion || currentSlide === 0 ? {} : { scale: 1.06 }}
+            whileTap={shouldReduceMotion || currentSlide === 0 ? {} : { scale: 0.94 }}
+            className="flex items-center justify-center rounded-full border border-paper/15 bg-paper/[0.06] p-3 text-paper/70 transition-colors hover:border-paper/30 hover:bg-paper/[0.14] hover:text-paper disabled:opacity-20 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand-soft"
+            aria-label="Previous slide"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </motion.button>
 
-        <button
-          onClick={() => { setDirection(1); onNext(); }}
-          disabled={currentSlide === totalSlides - 1}
-          className="text-paper/40 hover:text-paper disabled:opacity-20 disabled:cursor-not-allowed transition-colors p-3 rounded-lg focus-visible:ring-2 focus-visible:ring-brand-soft"
-          aria-label="Next slide"
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-        </button>
+          {/* Mono progress counter */}
+          <span className="font-mono text-xs text-paper/45 tracking-[0.12em]">
+            {String(currentSlide + 1).padStart(2, "0")} / {String(totalSlides).padStart(2, "0")}
+          </span>
+
+          <motion.button
+            onClick={() => { setDirection(1); onNext(); }}
+            disabled={currentSlide === totalSlides - 1}
+            whileHover={shouldReduceMotion || currentSlide === totalSlides - 1 ? {} : { scale: 1.06 }}
+            whileTap={shouldReduceMotion || currentSlide === totalSlides - 1 ? {} : { scale: 0.94 }}
+            className="flex items-center justify-center rounded-full border border-paper/15 bg-paper/[0.06] p-3 text-paper/70 transition-colors hover:border-paper/30 hover:bg-paper/[0.14] hover:text-paper disabled:opacity-20 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand-soft"
+            aria-label="Next slide"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </motion.button>
+        </div>
       </div>
     </motion.div>
   );

@@ -1,4 +1,9 @@
-export type SlideDiagram = "systemOverview" | "stakeholderFlow" | "architecture";
+export type SlideDiagram =
+  | "systemOverview"
+  | "stakeholderFlow"
+  | "flowOverview"
+  | "flowDetail"
+  | "architecture";
 export type SlideVariant = "standard" | "moneyUse" | "infraScaling" | "workstation";
 
 export interface MoneyUseColumn {
@@ -44,9 +49,9 @@ export const infraScalingRows: InfraScalingRow[] = [
     storage: "₹0.5–1.5k/mo",
     messaging: "usage-based, low",
     verification: "onboarding spikes",
-    annualInfra: "₹1.0L – 1.6L /yr",
-    barLabel: "₹1.0L – 1.6L",
-    barValue: 1.6,
+    annualInfra: "₹1.5L – 2.1L /yr",
+    barLabel: "₹1.5L – 2.1L",
+    barValue: 2.1,
   },
   {
     phase: "Year 2 — Expansion",
@@ -55,9 +60,9 @@ export const infraScalingRows: InfraScalingRow[] = [
     storage: "₹2–5k/mo",
     messaging: "higher volume",
     verification: "steady",
-    annualInfra: "₹3.0L – 5.0L /yr",
-    barLabel: "₹3.0L – 5.0L",
-    barValue: 5,
+    annualInfra: "₹3.5L – 5.5L /yr",
+    barLabel: "₹3.5L – 5.5L",
+    barValue: 5.5,
   },
   {
     phase: "Year 3 — Multi-region",
@@ -66,22 +71,22 @@ export const infraScalingRows: InfraScalingRow[] = [
     storage: "₹8–20k/mo",
     messaging: "high volume",
     verification: "steady",
-    annualInfra: "₹9L – 16L /yr",
-    barLabel: "₹9L – 16L",
-    barValue: 16,
+    annualInfra: "₹9.5L – 16.5L /yr",
+    barLabel: "₹9.5L – 16.5L",
+    barValue: 16.5,
   },
 ];
 
 export const presentationSlides: Slide[] = [
   {
-    id: "slide-founder",
+    id: "slide-intro",
     sectionId: "hero",
-    headline: "[FOUNDER NAME] — Technical co-founder, platform & architecture.",
+    headline: "India trusts its neighborhood pharmacy. We're turning that trust into verified healthcare access.",
     points: [
-      "Software engineer with banking-grade systems experience — payments, bulk data, compliance-heavy workflows.",
-      "Building Wellity's technical foundation: real-time infrastructure, health-identity integration, audit-first design.",
+      "Most Indians live nearer a pharmacy than a qualified doctor — the pharmacy is already the health touchpoint, just an informal, unverified one.",
+      "Wellity turns that walk-in into a verified specialist consult, a signed prescription, and a compliant health record — in one visit, no app required.",
+      "This deck is the case for funding the engineering that makes that loop real, compliant, and built to scale.",
     ],
-    tags: ["BANKING-GRADE SYSTEMS", "B.TECH, NIT", "IEEE-PUBLISHED"],
   },
   {
     id: "slide-system",
@@ -116,7 +121,17 @@ export const presentationSlides: Slide[] = [
       "Patient: walk in → consent OTP → consult → receive medicine (no app needed)",
       "Doctor: verify → go live → bid (atomic) → consult → write note + signed Rx",
     ],
-    diagram: "stakeholderFlow",
+    diagram: "flowOverview",
+  },
+  {
+    id: "slide-flows-detail",
+    sectionId: "flows",
+    headline: "Inside the loop: the pharmacy hub.",
+    points: [
+      "Eight steps, one continuous session — from verified onboarding to a signed Rx in the patient's hand.",
+      "Only two steps carry real-time risk — live doctor selection and atomic accept — and both are already engineered.",
+    ],
+    diagram: "flowDetail",
   },
   {
     id: "slide-architecture",
@@ -139,6 +154,18 @@ export const presentationSlides: Slide[] = [
     ],
     footnote:
       "The moat isn't the video call. It's the structured, multilingual health data only this channel produces.",
+  },
+  {
+    id: "slide-data-value",
+    sectionId: "phases",
+    headline: "Indian medical data, done right, is worth more than the consult.",
+    points: [
+      "India's structured, consented clinical data barely exists at population scale today — most health history lives on paper, in fragmented apps, or nowhere at all.",
+      "Every Wellity consult becomes ABDM/FHIR-aligned, DPDP-consented, structured clinical data — multilingual, point-of-care, impossible to fake.",
+      "Cleaned, structured, and stored compliantly, that dataset isn't a byproduct — it's worth crores to research, population health, and AI training, and it compounds with every consult.",
+    ],
+    footnote:
+      "We don't sell health data. We build the asset that makes Phase 2 — and everything after it — defensible.",
   },
   {
     id: "slide-compliance",
@@ -179,7 +206,7 @@ export const presentationSlides: Slide[] = [
     sectionId: "capital",
     headline: "3-year infrastructure scaling.",
     variant: "infraScaling",
-    points: ["Modeled, infra + services only", "One-time AI/dev workstation: ₹2.2L – 2.8L, Year 1 capex, reused across all 3 years"],
+    points: ["Modeled, infra + services only", "One-time AI/dev workstation: ₹3.5L, Year 1 capex, reused across all 3 years"],
     infraRows: infraScalingRows,
     footnote:
       "Infra + services only; excludes team. Costs track consults/day — we pay for scale as it arrives, not before.",
@@ -196,7 +223,7 @@ export const presentationSlides: Slide[] = [
       "Doubles as AI-assisted development hardware for a lean team.",
     ],
     comparison: {
-      own: "OWN: ~₹2.5L one-time",
+      own: "OWN: ~₹3.5L one-time",
       cloud: "CLOUD GPU: ~₹X/mo, indefinite",
       note: "Crosses break-even within months, then keeps charging.",
     },

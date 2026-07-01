@@ -4,6 +4,7 @@ import { capitalContent } from "@/content/capital";
 import { infraScalingRows } from "@/content/slides";
 import ScrollReveal from "@/components/ScrollReveal";
 import ScalingBudgetVisual from "@/components/diagrams/ScalingBudgetVisual";
+import WorkstationSpecTable from "@/components/WorkstationSpecTable";
 
 export default function CapitalSection() {
   return (
@@ -150,6 +151,12 @@ export default function CapitalSection() {
                 </li>
               ))}
             </ul>
+            <div className="mb-4">
+              <WorkstationSpecTable rows={capitalContent.workstationSpecs} />
+              <p className="mt-3 font-mono text-xs leading-relaxed text-brand">
+                {capitalContent.workstationFramingLine}
+              </p>
+            </div>
             <p className="text-muted text-xs italic font-mono leading-relaxed">
               {capitalContent.workstationFootnote}
             </p>

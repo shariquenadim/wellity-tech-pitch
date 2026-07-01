@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
+import BackgroundDecoration from "@/components/BackgroundDecoration";
 import HeroSection from "@/components/sections/HeroSection";
 import ProblemSection from "@/components/sections/ProblemSection";
 import SystemOverviewSection from "@/components/sections/SystemOverviewSection";
@@ -22,11 +23,15 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const openPresentation = useCallback(() => {
+    document.documentElement.requestFullscreen?.().catch(() => {});
     setCurrentSlide(0);
     setPresentationActive(true);
   }, []);
 
   const closePresentation = useCallback(() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
     setPresentationActive(false);
   }, []);
 
@@ -46,6 +51,7 @@ export default function Home() {
 
   return (
     <>
+      <BackgroundDecoration />
       <Header onPresentationMode={openPresentation} />
 
       <main className="pt-14 md:pt-16">
