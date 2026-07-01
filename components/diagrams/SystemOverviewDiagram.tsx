@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
+import DiagramImageFallback from "@/components/diagrams/DiagramImageFallback";
 
 interface Props {
   trigger?: boolean;
@@ -27,7 +28,7 @@ export default function SystemOverviewDiagram({ trigger, className = "" }: Props
     transition: { duration: 0.5, ease: EASE, delay },
   });
 
-  return (
+  const svg = (
     <div className={`w-full overflow-x-auto ${className}`}>
       <svg
         ref={ref}
@@ -161,5 +162,15 @@ export default function SystemOverviewDiagram({ trigger, className = "" }: Props
         </motion.text>
       </svg>
     </div>
+  );
+
+  return (
+    <DiagramImageFallback
+      src="/diagrams/system-overview.png"
+      alt="Pharmacy hub connects a patient to a specialist and returns a signed prescription plus record"
+      className={className}
+    >
+      {svg}
+    </DiagramImageFallback>
   );
 }

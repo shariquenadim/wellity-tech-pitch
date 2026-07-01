@@ -1,7 +1,9 @@
 "use client";
 
 import { capitalContent } from "@/content/capital";
+import { infraScalingRows } from "@/content/slides";
 import ScrollReveal from "@/components/ScrollReveal";
+import ScalingBudgetVisual from "@/components/diagrams/ScalingBudgetVisual";
 
 export default function CapitalSection() {
   return (
@@ -26,10 +28,48 @@ export default function CapitalSection() {
           </p>
         </ScrollReveal>
 
-        {/* Cost Table */}
         <ScrollReveal delay={0.12}>
-          <div className="overflow-x-auto -mx-6 px-6 mb-12">
-            <table className="w-full text-sm border-collapse min-w-[600px]">
+          <div className="mb-12">
+            <div className="mb-5 flex flex-wrap items-center gap-3">
+              <h3 className="font-sans text-lg font-semibold text-ink">
+                3-year infrastructure scaling
+              </h3>
+              <span className="rounded-full border border-live/30 bg-live/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-live">
+                modeled, infra + services only
+              </span>
+            </div>
+            <ScalingBudgetVisual rows={infraScalingRows} />
+            <p className="mt-4 max-w-3xl font-mono text-xs leading-relaxed text-muted">
+              Infra + services only; excludes team. Costs track consults/day — we pay for scale as it arrives, not before.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        {/* Cost Table */}
+        <ScrollReveal delay={0.18}>
+          <div className="mb-12">
+            <div className="grid gap-3 sm:hidden">
+              {capitalContent.costTable.map((row) => (
+                <div key={row.item} className="rounded-[14px] border border-line bg-surface p-4">
+                  <div className="mb-2 flex items-start justify-between gap-3">
+                    <h3 className="font-sans text-sm font-semibold text-ink">
+                      {row.item}
+                    </h3>
+                    <span className="shrink-0 rounded bg-brand/8 px-2 py-0.5 font-mono text-[10px] tracking-wide text-brand/80">
+                      {row.type}
+                    </span>
+                  </div>
+                  <p className="mb-3 text-xs leading-relaxed text-muted">
+                    {row.purpose}
+                  </p>
+                  <p className="font-mono text-sm font-semibold text-ink">
+                    {row.estimate}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <table className="hidden w-full border-collapse text-sm sm:table">
               <thead>
                 <tr className="border-b border-line">
                   <th className="text-left py-3 pr-4 font-mono text-[10px] tracking-[0.15em] text-muted font-medium uppercase">
@@ -77,7 +117,7 @@ export default function CapitalSection() {
         </ScrollReveal>
 
         {/* Workstation Justification */}
-        <ScrollReveal delay={0.18}>
+        <ScrollReveal delay={0.24}>
           <div className="border border-brand/20 rounded-2xl p-6 md:p-8 bg-brand/[0.02]">
             <h3 className="font-sans font-semibold text-ink text-lg mb-4 flex items-start gap-3">
               <svg

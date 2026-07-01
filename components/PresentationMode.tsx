@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { presentationSlides } from "@/content/slides";
 import { stakeholderFlows } from "@/content/flows";
 import SystemOverviewDiagram from "@/components/diagrams/SystemOverviewDiagram";
 import StakeholderFlowDiagram from "@/components/diagrams/StakeholderFlowDiagram";
 import ArchitectureDiagram from "@/components/diagrams/ArchitectureDiagram";
+import ScalingBudgetVisual from "@/components/diagrams/ScalingBudgetVisual";
 
 interface PresentationModeProps {
   isActive: boolean;
@@ -19,18 +20,157 @@ interface PresentationModeProps {
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+function SlidePoints({
+  points,
+  reduceMotion,
+}: {
+  points: string[];
+  reduceMotion: boolean | null;
+}) {
+  if (points.length === 0) return null;
+
+  return (
+    <ul className="space-y-3 mb-8">
+      {points.map((point, i) => (
+        <motion.li
+          key={point}
+          initial={reduceMotion ? {} : { opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.15 + i * 0.07, duration: 0.4, ease: EASE }}
+          className="flex items-start gap-3 text-paper/80"
+        >
+          <span className="mt-2 w-1.5 h-1.5 rounded-full bg-brand-soft flex-shrink-0" />
+          <span
+            className="font-sans leading-relaxed"
+            style={{ fontSize: "clamp(0.95rem, 1.8vw, 1.15rem)" }}
+          >
+            {point}
+          </span>
+        </motion.li>
+      ))}
+    </ul>
+  );
+}
+
+function MoneyUseSlide({
+  slide,
+  reduceMotion,
+}: {
+  slide: (typeof presentationSlides)[number];
+  reduceMotion: boolean | null;
+}) {
+  return (
+    <>
+      <div className="grid gap-4 md:grid-cols-3">
+        {slide.moneyUse?.map((column, index) => (
+          <motion.div
+            key={column.title}
+            initial={reduceMotion ? {} : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, ease: EASE, delay: 0.12 + index * 0.08 }}
+            className="rounded-[14px] border border-paper/12 bg-paper/[0.06] p-5"
+          >
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.15em] text-brand-soft">
+              {column.title}
+            </p>
+            <p className="text-sm leading-relaxed text-paper/72 md:text-base">
+              {column.body}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+      {slide.footnote && (
+        <p className="mt-6 font-mono text-xs leading-relaxed text-paper/42">
+          {slide.footnote}
+        </p>
+      )}
+    </>
+  );
+}
+
+function InfraScalingSlide({
+  slide,
+  reduceMotion,
+}: {
+  slide: (typeof presentationSlides)[number];
+  reduceMotion: boolean | null;
+}) {
+  return (
+    <>
+      <div className="mb-5 flex flex-wrap items-center gap-3">
+        {slide.points.map((point, index) => (
+          <motion.span
+            key={point}
+            initial={reduceMotion ? {} : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: EASE, delay: 0.08 + index * 0.06 }}
+            className={`rounded-full border px-3 py-1.5 font-mono text-[10px] tracking-[0.1em] ${
+              index === 0
+                ? "border-live/35 bg-live/10 text-live uppercase"
+                : "border-paper/12 bg-paper/[0.05] text-paper/58"
+            }`}
+          >
+            {point}
+          </motion.span>
+        ))}
+      </div>
+      {slide.infraRows && (
+        <ScalingBudgetVisual rows={slide.infraRows} trigger={true} dark />
+      )}
+      {slide.footnote && (
+        <p className="mt-5 font-mono text-xs leading-relaxed text-paper/42">
+          {slide.footnote}
+        </p>
+      )}
+    </>
+  );
+}
+
+function WorkstationSlide({
+  slide,
+  reduceMotion,
+}: {
+  slide: (typeof presentationSlides)[number];
+  reduceMotion: boolean | null;
+}) {
+  return (
+    <>
+      <SlidePoints points={slide.points} reduceMotion={reduceMotion} />
+      {slide.comparison && (
+        <motion.div
+          initial={reduceMotion ? {} : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.42, ease: EASE, delay: 0.45 }}
+          className="rounded-[14px] border border-brand-soft/25 bg-brand-soft/[0.08] p-5"
+        >
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg border border-paper/12 bg-paper/[0.06] px-4 py-3 font-mono text-sm font-semibold text-paper">
+              {slide.comparison.own}
+            </div>
+            <div className="rounded-lg border border-live/25 bg-live/10 px-4 py-3 font-mono text-sm font-semibold text-live">
+              {slide.comparison.cloud}
+            </div>
+          </div>
+          <p className="mt-4 font-mono text-xs text-paper/45">
+            {slide.comparison.note}
+          </p>
+        </motion.div>
+      )}
+    </>
+  );
+}
+
 export default function PresentationMode({
   isActive,
   currentSlide,
   onClose,
   onNext,
   onPrev,
-  onGoTo,
 }: PresentationModeProps) {
   const shouldReduceMotion = useReducedMotion();
   const totalSlides = presentationSlides.length;
   const slide = presentationSlides[currentSlide];
-  const directionRef = useRef(1);
+  const [direction, setDirection] = useState(1);
   const prevSlideRef = useRef(currentSlide);
 
   const handleKeyDown = useCallback(
@@ -40,12 +180,12 @@ export default function PresentationMode({
         case "ArrowRight":
         case " ":
           e.preventDefault();
-          directionRef.current = 1;
+          setDirection(1);
           onNext();
           break;
         case "ArrowLeft":
           e.preventDefault();
-          directionRef.current = -1;
+          setDirection(-1);
           onPrev();
           break;
         case "Escape":
@@ -58,8 +198,8 @@ export default function PresentationMode({
   );
 
   useEffect(() => {
-    if (currentSlide > prevSlideRef.current) directionRef.current = 1;
-    else if (currentSlide < prevSlideRef.current) directionRef.current = -1;
+    if (currentSlide > prevSlideRef.current) setDirection(1);
+    else if (currentSlide < prevSlideRef.current) setDirection(-1);
     prevSlideRef.current = currentSlide;
   }, [currentSlide]);
 
@@ -94,6 +234,7 @@ export default function PresentationMode({
       };
 
   const pharmacyFlow = stakeholderFlows[0];
+  const isWideSlide = slide.variant === "infraScaling";
 
   return (
     <motion.div
@@ -115,18 +256,18 @@ export default function PresentationMode({
       </button>
 
       {/* Slide content */}
-      <AnimatePresence mode="wait" custom={directionRef.current}>
+      <AnimatePresence mode="wait" custom={direction}>
         <motion.div
           key={slide.id}
-          custom={directionRef.current}
+          custom={direction}
           variants={slideVariants}
           initial="enter"
           animate="center"
           exit="exit"
           transition={{ duration: 0.45, ease: EASE }}
-          className="h-full w-full flex items-center justify-center px-8 md:px-14 lg:px-20 overflow-y-auto"
+          className="h-full w-full flex items-center justify-center px-5 md:px-12 lg:px-16 overflow-y-auto"
         >
-          <div className="max-w-4xl w-full py-16">
+          <div className={`${isWideSlide ? "max-w-7xl" : "max-w-4xl"} w-full py-16`}>
             {/* Headline */}
             <h2
               className="font-display text-paper mb-8 max-w-3xl"
@@ -140,27 +281,8 @@ export default function PresentationMode({
               {slide.headline}
             </h2>
 
-            {/* Points */}
-            {slide.points.length > 0 && (
-              <ul className="space-y-3 mb-8">
-                {slide.points.map((point, i) => (
-                  <motion.li
-                    key={i}
-                    initial={shouldReduceMotion ? {} : { opacity: 0, x: 12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.15 + i * 0.07, duration: 0.4, ease: EASE }}
-                    className="flex items-start gap-3 text-paper/80"
-                  >
-                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-brand-soft flex-shrink-0" />
-                    <span
-                      className="font-sans leading-relaxed"
-                      style={{ fontSize: "clamp(0.95rem, 1.8vw, 1.15rem)" }}
-                    >
-                      {point}
-                    </span>
-                  </motion.li>
-                ))}
-              </ul>
+            {(!slide.variant || slide.variant === "standard") && (
+              <SlidePoints points={slide.points} reduceMotion={shouldReduceMotion} />
             )}
 
             {/* Credibility tags (founder slide) */}
@@ -194,7 +316,7 @@ export default function PresentationMode({
                   <SystemOverviewDiagram trigger={true} />
                 )}
                 {slide.diagram === "stakeholderFlow" && (
-                  <StakeholderFlowDiagram flow={pharmacyFlow} trigger={true} />
+                  <StakeholderFlowDiagram flow={pharmacyFlow} trigger={true} dark />
                 )}
                 {slide.diagram === "architecture" && (
                   <ArchitectureDiagram dark trigger={true} />
@@ -202,8 +324,20 @@ export default function PresentationMode({
               </motion.div>
             )}
 
+            {slide.variant === "moneyUse" && (
+              <MoneyUseSlide slide={slide} reduceMotion={shouldReduceMotion} />
+            )}
+
+            {slide.variant === "infraScaling" && (
+              <InfraScalingSlide slide={slide} reduceMotion={shouldReduceMotion} />
+            )}
+
+            {slide.variant === "workstation" && (
+              <WorkstationSlide slide={slide} reduceMotion={shouldReduceMotion} />
+            )}
+
             {/* Footnote */}
-            {slide.footnote && (
+            {slide.footnote && !slide.variant && (
               <p className="mt-6 text-paper/35 text-sm font-mono italic leading-relaxed">
                 {slide.footnote}
               </p>
@@ -215,7 +349,7 @@ export default function PresentationMode({
       {/* Navigation */}
       <div className="absolute bottom-6 left-0 right-0 flex items-center justify-between px-8">
         <button
-          onClick={() => { directionRef.current = -1; onPrev(); }}
+          onClick={() => { setDirection(-1); onPrev(); }}
           disabled={currentSlide === 0}
           className="text-paper/40 hover:text-paper disabled:opacity-20 disabled:cursor-not-allowed transition-colors p-3 rounded-lg focus-visible:ring-2 focus-visible:ring-brand-soft"
           aria-label="Previous slide"
@@ -231,7 +365,7 @@ export default function PresentationMode({
         </span>
 
         <button
-          onClick={() => { directionRef.current = 1; onNext(); }}
+          onClick={() => { setDirection(1); onNext(); }}
           disabled={currentSlide === totalSlides - 1}
           className="text-paper/40 hover:text-paper disabled:opacity-20 disabled:cursor-not-allowed transition-colors p-3 rounded-lg focus-visible:ring-2 focus-visible:ring-brand-soft"
           aria-label="Next slide"

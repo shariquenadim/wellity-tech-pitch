@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useReducedMotion } from "framer-motion";
 import { stakeholderFlows, flowsIntro } from "@/content/flows";
 import ScrollReveal from "@/components/ScrollReveal";
 import StakeholderFlowDiagram from "@/components/diagrams/StakeholderFlowDiagram";
 
 export default function FlowsSection() {
   const [activeFlow, setActiveFlow] = useState(0);
-  const shouldReduceMotion = useReducedMotion();
   const currentFlow = stakeholderFlows[activeFlow];
 
   return (
@@ -37,7 +35,7 @@ export default function FlowsSection() {
               <button
                 key={flow.id}
                 onClick={() => setActiveFlow(i)}
-                className={`px-4 py-2 rounded-lg text-sm font-sans font-medium transition-all focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 ${
+                className={`min-h-11 px-4 py-2 rounded-lg text-sm font-sans font-medium transition-all focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 ${
                   activeFlow === i
                     ? "bg-brand text-white shadow-sm"
                     : "text-muted hover:text-ink hover:bg-white/60"

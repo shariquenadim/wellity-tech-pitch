@@ -1,24 +1,78 @@
+export type SlideDiagram = "systemOverview" | "stakeholderFlow" | "architecture";
+export type SlideVariant = "standard" | "moneyUse" | "infraScaling" | "workstation";
+
+export interface MoneyUseColumn {
+  title: string;
+  body: string;
+}
+
+export interface InfraScalingRow {
+  phase: string;
+  scale: string;
+  compute: string;
+  storage: string;
+  messaging: string;
+  verification: string;
+  annualInfra: string;
+  barLabel: string;
+  barValue: number;
+}
+
 export interface Slide {
   id: string;
   sectionId: string;
   headline: string;
   points: string[];
+  variant?: SlideVariant;
   footnote?: string;
-  diagram?: "systemOverview" | "stakeholderFlow" | "architecture";
+  diagram?: SlideDiagram;
   tags?: string[];
+  moneyUse?: MoneyUseColumn[];
+  infraRows?: InfraScalingRow[];
+  comparison?: {
+    own: string;
+    cloud: string;
+    note: string;
+  };
 }
 
-export const presentationSlides: Slide[] = [
+export const infraScalingRows: InfraScalingRow[] = [
   {
-    id: "slide-title",
-    sectionId: "hero",
-    headline: "Specialist care, delivered through the pharmacy next door.",
-    points: [
-      "B2B telemedicine infrastructure for rural and Tier 2/3 India",
-      "Pharmacies become compliant care hubs — no app for patients to learn",
-      "Engineered for low-bandwidth India, built on ABDM, audited end to end",
-    ],
+    phase: "Year 1 — Pilot",
+    scale: "~50–150/day",
+    compute: "1 VPS + backups (₹4–8k/mo)",
+    storage: "₹0.5–1.5k/mo",
+    messaging: "usage-based, low",
+    verification: "onboarding spikes",
+    annualInfra: "₹1.0L – 1.6L /yr",
+    barLabel: "₹1.0L – 1.6L",
+    barValue: 1.6,
   },
+  {
+    phase: "Year 2 — Expansion",
+    scale: "~500–1,500/day",
+    compute: "scaled VPS / small cluster (₹15–30k/mo)",
+    storage: "₹2–5k/mo",
+    messaging: "higher volume",
+    verification: "steady",
+    annualInfra: "₹3.0L – 5.0L /yr",
+    barLabel: "₹3.0L – 5.0L",
+    barValue: 5,
+  },
+  {
+    phase: "Year 3 — Multi-region",
+    scale: "~3,000–8,000/day",
+    compute: "HA cluster + read replicas (₹50k–1L/mo)",
+    storage: "₹8–20k/mo",
+    messaging: "high volume",
+    verification: "steady",
+    annualInfra: "₹9L – 16L /yr",
+    barLabel: "₹9L – 16L",
+    barValue: 16,
+  },
+];
+
+export const presentationSlides: Slide[] = [
   {
     id: "slide-founder",
     sectionId: "hero",
@@ -30,16 +84,6 @@ export const presentationSlides: Slide[] = [
     tags: ["BANKING-GRADE SYSTEMS", "B.TECH, NIT", "IEEE-PUBLISHED"],
   },
   {
-    id: "slide-gap",
-    sectionId: "problem",
-    headline: "The gap is structural. The channel is hiding in plain sight.",
-    points: [
-      "70%+ of doctors are in cities. 72% of patients aren't.",
-      "The trusted point of contact in rural India is the local pharmacy.",
-      "That's where we put the doctor.",
-    ],
-  },
-  {
     id: "slide-system",
     sectionId: "system",
     headline: "The pharmacy is the hub. Everything else is infrastructure.",
@@ -48,17 +92,6 @@ export const presentationSlides: Slide[] = [
       "Real-time selection, health-ID integration, and audit trail — on networks that drop",
     ],
     diagram: "systemOverview",
-  },
-  {
-    id: "slide-flows",
-    sectionId: "flows",
-    headline: "Three roles, one clean loop.",
-    points: [
-      "Pharmacy: onboard → register patient → select doctor (live) → print Rx + dispense",
-      "Patient: walk in → consent OTP → consult → receive medicine (no app needed)",
-      "Doctor: verify → go live → bid (atomic) → consult → write note + signed Rx",
-    ],
-    diagram: "stakeholderFlow",
   },
   {
     id: "slide-decisions",
@@ -73,6 +106,17 @@ export const presentationSlides: Slide[] = [
     ],
     footnote:
       "None of these are visible in a demo. All of them are why a real engineering team is needed.",
+  },
+  {
+    id: "slide-flows",
+    sectionId: "flows",
+    headline: "Three roles, one clean loop.",
+    points: [
+      "Pharmacy: onboard → register patient → select doctor (live) → print Rx + dispense",
+      "Patient: walk in → consent OTP → consult → receive medicine (no app needed)",
+      "Doctor: verify → go live → bid (atomic) → consult → write note + signed Rx",
+    ],
+    diagram: "stakeholderFlow",
   },
   {
     id: "slide-architecture",
@@ -108,22 +152,62 @@ export const presentationSlides: Slide[] = [
     ],
   },
   {
-    id: "slide-capital",
+    id: "slide-money-use",
     sectionId: "capital",
-    headline: "Strong architecture, deliberately low cost.",
-    points: [
-      "₹2.2–2.8L one-time workstation replaces open-ended cloud-GPU bills",
-      "~₹5–10k/mo total infra — VPS + backups + object storage",
-      "Health data on-premise during R&D — a DPDP advantage",
-      "The ask is focused tooling, not premature scale",
+    headline: "What the money is for.",
+    variant: "moneyUse",
+    points: [],
+    moneyUse: [
+      {
+        title: "Build",
+        body: "AI/dev workstation for in-house model R&D (voice-to-EMR) + AI-assisted development. One-time capex.",
+      },
+      {
+        title: "Run",
+        body: "India-hosted VPS, backups, object storage, business email. Keeps the platform live, compliant, and data-resident.",
+      },
+      {
+        title: "Reach",
+        body: "WhatsApp Business API + verification APIs (Aadhaar/PAN/licence). The per-transaction rails that move records and onboard doctors/pharmacies safely.",
+      },
     ],
+    footnote:
+      "Infra + services only. Lean by design — the ask scales with usage, not ahead of it.",
+  },
+  {
+    id: "slide-infra-scaling",
+    sectionId: "capital",
+    headline: "3-year infrastructure scaling.",
+    variant: "infraScaling",
+    points: ["Modeled, infra + services only", "One-time AI/dev workstation: ₹2.2L – 2.8L, Year 1 capex, reused across all 3 years"],
+    infraRows: infraScalingRows,
+    footnote:
+      "Infra + services only; excludes team. Costs track consults/day — we pay for scale as it arrives, not before.",
+  },
+  {
+    id: "slide-workstation",
+    sectionId: "capital",
+    headline: "Why own the workstation.",
+    variant: "workstation",
+    points: [
+      "One-time capex vs. open-ended monthly cloud-GPU bills.",
+      "Phase 2 model work runs locally — no per-token cost while benchmarking the voice-to-EMR pipeline.",
+      "Health data stays on-premise during R&D — a DPDP advantage, not just a cost one.",
+      "Doubles as AI-assisted development hardware for a lean team.",
+    ],
+    comparison: {
+      own: "OWN: ~₹2.5L one-time",
+      cloud: "CLOUD GPU: ~₹X/mo, indefinite",
+      note: "Crosses break-even within months, then keeps charging.",
+    },
   },
   {
     id: "slide-close",
     sectionId: "close",
     headline: "The trust already exists. We're giving it a specialist.",
     points: [
-      "Three stakeholder flows finalized · Marketing site live · Architecture scoped · Vendor groundwork done",
+      "What's built: three stakeholder flows finalized · Marketing site live · Onboarding backend in development",
+      "Architecture scoped · Compliance approach finalized · Vendor groundwork done",
       "Wellity HealthCare — last-mile telemedicine infrastructure for the India that needs it most.",
     ],
   },
